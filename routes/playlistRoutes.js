@@ -1,14 +1,10 @@
-import express from "express";
-import {
-  getPlaylistByArtist,
-  getPlaylistByGenre,
-  getPlaylistWithRandomSong,
-} from "../controllers/playlistController.js";
+const express = require('express');
+const { getPlaylistByArtist, getPlaylistByGenre, getPlaylistWithRandomSong } = require('../controllers/playlistController.js');
 
 const songRoutes = express.Router();
 
-songRoutes.post("/song/artist", getPlaylistByArtist);
-songRoutes.post("/song/genre", getPlaylistByGenre);
-songRoutes.post("/song/random", getPlaylistWithRandomSong);
+songRoutes.post('/song/artist', getPlaylistByArtist);
+songRoutes.post('/song/genre', getPlaylistByGenre);
+songRoutes.post('/song/random', getPlaylistWithRandomSong);
 
-export { songRoutes };
+module.exports = { songRoutes };

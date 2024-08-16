@@ -1,16 +1,12 @@
-import { songs } from "../songs.js";
+const { songs } = require('../songs.js');
 
 const getPlaylistByArtist = (req, res) => {
   const { artist } = req.body;
   if (!artist) {
-    return res
-      .status(400)
-      .json({ message: "Parameter artist name is required!" });
+    return res.status(400).json({ message: 'Parameter artist name is required!' });
   }
 
-  let groupedSongByArtist = songs.filter(
-    (song) => song.artist.toLocaleLowerCase() == artist.toLocaleLowerCase()
-  );
+  let groupedSongByArtist = songs.filter((song) => song.artist.toLocaleLowerCase() == artist.toLocaleLowerCase());
 
   return res.status(200).json({
     songs: groupedSongByArtist,
@@ -20,12 +16,10 @@ const getPlaylistByArtist = (req, res) => {
 const getPlaylistByGenre = (req, res) => {
   const { genre } = req.body;
   if (!genre) {
-    return res.status(400).json({ message: "Parameter genre is required!" });
+    return res.status(400).json({ message: 'Parameter genre is required!' });
   }
 
-  let groupedSongByGenre = songs.filter(
-    (song) => song.genre.toLocaleLowerCase() == genre.toLocaleLowerCase()
-  );
+  let groupedSongByGenre = songs.filter((song) => song.genre.toLocaleLowerCase() == genre.toLocaleLowerCase());
 
   return res.status(200).json({
     songs: groupedSongByGenre,
@@ -40,8 +34,8 @@ const getPlaylistWithRandomSong = (req, res) => {
   let groupedSong = [initSong];
   while (true) {
     randomIndex = Math.floor(Math.random() * copiedSong.length);
-    console.log("random index :", randomIndex);
-    console.log("songs length :", copiedSong.length);
+    console.log('random index :', randomIndex);
+    console.log('songs length :', copiedSong.length);
     let randomSong = copiedSong.splice(randomIndex, 1)[0];
     if (initDuration + calculateSecond(randomSong.duration) > 3600) {
       break;
@@ -51,10 +45,7 @@ const getPlaylistWithRandomSong = (req, res) => {
     initDuration += calculateSecond(randomSong.duration);
   }
 
-  let totalDuration = groupedSong.reduce(
-    (acc, cur) => acc + calculateSecond(cur.duration),
-    0
-  );
+  let totalDuration = groupedSong.reduce((acc, cur) => acc + calculateSecond(cur.duration), 0);
 
   return res.status(200).json({
     playlist: {
@@ -65,7 +56,7 @@ const getPlaylistWithRandomSong = (req, res) => {
 };
 
 function calculateSecond(duration) {
-  const [minute, second] = duration.split(":");
+  const [minute, second] = duration.split(':');
   return parseInt(minute) * 60 + parseInt(second);
 }
 
@@ -76,4 +67,4 @@ function calculateDuration(seconds) {
   return `${minutes}:${secs.toString().padStart(2, 0)}`;
 }
 
-export { getPlaylistByArtist, getPlaylistByGenre, getPlaylistWithRandomSong };
+module.exports = { getPlaylistByArtist, getPlaylistByGenre, getPlaylistWithRandomSong };
