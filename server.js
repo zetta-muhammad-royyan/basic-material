@@ -5,8 +5,8 @@ const { calculateCredit, calculateInterestPrice } = require('./helper.js');
 const { auth } = require('./middlewares/auth.js');
 
 // PARAMETERS
-const DISCOUNT = 20;
-const TAX = 10;
+const DISCOUNT = 0;
+const TAX = 0;
 
 const app = express();
 app.use(bodyParser.json());

@@ -2,7 +2,7 @@ const books = [
   {
     id: 1,
     title: 'A Game of Thrones',
-    price: 150000,
+    price: 100000,
     stock: 10,
   },
   {

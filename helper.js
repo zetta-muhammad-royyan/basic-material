@@ -38,7 +38,8 @@ const calculateInterestPrice = (term, priceStart) => {
   }
 
   let interestPrice = (priceStart * interestRate) / 100;
-  return interestPrice + priceStart;
+  // return interestPrice + priceStart;
+  return priceStart;
 };
 
 module.exports = { calculateCredit, calculateInterestPrice };
