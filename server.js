@@ -42,14 +42,35 @@ app.post('/purchase', auth, async (req, res) => {
   entry.paid = true;
   termByDate.set(allTerms[0].dueDate, entry);
 
+  let oneTermBasedOnClosestDate = { [closestDate(termByDate)]: termByDate.get(closestDate(termByDate)) };
+
   return res.status(200).json({
     normalPrice: normalPrice,
     priceWithCredit: calculateInterestPrice(term, normalPrice),
     allTerms: allTerms,
     distinctTerm: Array.from(distinctTerm),
     termByDate: Array.from(termByDate, ([key, value]) => ({ [key]: value })),
+    oneTerm: oneTermBasedOnClosestDate,
   });
 });
+
+function closestDate(payments) {
+  const today = new Date();
+  let closestDate = null;
+  let minDiff = Infinity;
+
+  payments.forEach((value, key) => {
+    const paymentDate = new Date(key);
+    const timeDiff = Math.abs(paymentDate - today);
+
+    if (timeDiff < minDiff) {
+      minDiff = timeDiff;
+      closestDate = key;
+    }
+  });
+
+  return closestDate;
+}
 
 app.listen(8080, () => {
   console.log('Server running on port 8080');
