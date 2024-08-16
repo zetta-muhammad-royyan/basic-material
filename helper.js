@@ -1,17 +1,24 @@
 const calculateCredit = (totalMonth, totalPrice) => {
-    let credits = []
-    let currentDate = new Date
-    for (let i = 1; i <= totalMonth; i++) {
-        let dueDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + i, currentDate.getDate())
-        let credit = {
-            dueDate: dueDate.toISOString().split("T")[0],
-            amount: Math.ceil(totalPrice / totalMonth)
-        }
+  credits = [];
+  currentDate = new Date();
 
-        credits.push(credit)
-    }
+  baseAmount = Math.floor(totalPrice / totalMonth);
+  remainder = totalPrice - baseAmount * (totalMonth - 1);
 
-    return credits
-}
+  for (i = 1; i <= totalMonth; i++) {
+    year = currentDate.getFullYear();
+    month = currentDate.getMonth() + i;
+    lastDayOfMonth = new Date(year, month);
 
-export { calculateCredit }
+    credit = {
+      dueDate: lastDayOfMonth.toISOString().split('T')[0],
+      amount: i === totalMonth ? remainder : baseAmount,
+    };
+
+    credits.push(credit);
+  }
+
+  return credits;
+};
+
+module.exports = { calculateCredit };
