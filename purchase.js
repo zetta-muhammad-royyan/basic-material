@@ -1,5 +1,5 @@
-const discount = 20;
-const tax = 5;
+const discount = 0;
+const tax = 0;
 
 function purchase(bookDetails, purchasedBook, creditMonth) {
   let { price, stock } = bookDetails;
@@ -36,18 +36,25 @@ function purchase(bookDetails, purchasedBook, creditMonth) {
 
 let book = {
   title: 'A Dance with Dragons',
-  price: 150000,
+  price: 100000,
   stock: 5,
 };
 
 function calculateCredit(totalMonth, totalPrice) {
   credits = [];
   currentDate = new Date();
+
+  baseAmount = Math.floor(totalPrice / totalMonth);
+  remainder = totalPrice - baseAmount * (totalMonth - 1);
+
   for (i = 1; i <= totalMonth; i++) {
-    dueDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + i, currentDate.getDate());
+    year = currentDate.getFullYear();
+    month = currentDate.getMonth() + i;
+    lastDayOfMonth = new Date(year, month);
+
     credit = {
-      dueDate: dueDate.toISOString().split('T')[0],
-      amount: Math.ceil(totalPrice / totalMonth),
+      dueDate: lastDayOfMonth.toISOString().split('T')[0],
+      amount: i === totalMonth ? remainder : baseAmount,
     };
 
     credits.push(credit);
@@ -56,4 +63,4 @@ function calculateCredit(totalMonth, totalPrice) {
   return credits;
 }
 
-purchase(book, 3, 9);
+purchase(book, 1, 3);
