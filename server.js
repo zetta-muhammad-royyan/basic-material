@@ -1,8 +1,8 @@
-import express from "express";
-import bodyParser from "body-parser";
-import { books } from "./books.js";
-import { calculateCredit, calculateInterestPrice } from "./helper.js";
-import { auth } from "./middlewares/auth.js";
+const express = require('express');
+const bodyParser = require('body-parser');
+const { books } = require('./books.js');
+const { calculateCredit, calculateInterestPrice } = require('./helper.js');
+const { auth } = require('./middlewares/auth.js');
 
 // PARAMETERS
 const DISCOUNT = 20;
@@ -11,20 +11,16 @@ const TAX = 10;
 const app = express();
 app.use(bodyParser.json());
 
-app.post("/purchase", auth, async (req, res) => {
+app.post('/purchase', auth, async (req, res) => {
   const { bookID, term, quantity } = req.body;
 
   let book = books.find((book) => book.id === bookID);
   if (!book) {
-    return res
-      .status(404)
-      .json({ message: `Cannot find book with id ${bookID}` });
+    return res.status(404).json({ message: `Cannot find book with id ${bookID}` });
   }
 
   if (quantity > book.stock) {
-    return res
-      .status(400)
-      .json({ message: `Maximum purchase is ${book.stock}` });
+    return res.status(400).json({ message: `Maximum purchase is ${book.stock}` });
   }
 
   let priceStart = quantity * book.price;
@@ -41,5 +37,5 @@ app.post("/purchase", auth, async (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("Server running on port 8080");
+  console.log('Server running on port 8080');
 });

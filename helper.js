@@ -3,15 +3,20 @@ const calculateCredit = (term, totalPrice) => {
     setTimeout(() => {
       let credits = [];
       let currentDate = new Date();
+
+      let finalPrice = calculateInterestPrice(term, totalPrice);
+      let baseAmount = Math.floor(finalPrice / term);
+      console.log(totalPrice, calculateInterestPrice(term, totalPrice), term);
+      let remainder = finalPrice - baseAmount * (term - 1);
+
       for (let i = 1; i <= term; i++) {
-        let dueDate = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + i,
-          currentDate.getDate()
-        );
+        let year = currentDate.getFullYear();
+        let month = currentDate.getMonth() + i;
+        let lastDayOfMonth = new Date(year, month);
+
         let credit = {
-          dueDate: dueDate.toISOString().split("T")[0],
-          amount: calculateInterestPrice(term, totalPrice) / term,
+          dueDate: lastDayOfMonth.toISOString().split('T')[0],
+          amount: i === term ? remainder : baseAmount,
         };
 
         credits.push(credit);
@@ -37,4 +42,4 @@ const calculateInterestPrice = (term, priceStart) => {
   return interestPrice + priceStart;
 };
 
-export { calculateCredit, calculateInterestPrice };
+module.exports = { calculateCredit, calculateInterestPrice };
